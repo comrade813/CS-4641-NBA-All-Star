@@ -15,18 +15,18 @@ Because predicting if a player will be an NBA All-Star is highly dependent on th
 ### Potential Results
 We plan to test our models on the last 20 seasons of NBA data and associated all-star teams. We can then calculate classification metrics such as accuracy, precision, recall, and the F1-score. The latter will be useful because our data is inherently not balanced (since we have many times more non-All-Stars than All-Stars). Additionally, we plan to calculate the percentage of All-Star players that our model was able to predict for every year in the test set. Finally, we plan to include a discussion comparing the performance of our models with existing work.
 
+### Gantt Chart Schedule
+[Schedule and Roles](https://docs.google.com/spreadsheets/d/1LuZolhejX2NLJRxYQ-LqDw4Ic4dFY-k-Nkb-kCGmC5Q/edit?usp=sharing)
+
 ### References
 [1] B. Ji and J. Li, "NBA All-Star Lineup Prediction Based on Neural Networks," 2013 International Conference on Information Science and Cloud Computing Companion, 2013, pp. 864-869, doi: 10.1109/ISCC-C.2013.92.
 
-https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6973701
+[Link to Paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6973701)
 
 [2] Li, X. (2021, December). National Basketball Association Most Valuable Player prediction based on machine learning methods. In Second IYSF Academic Symposium on Artificial Intelligence and Computer Engineering (Vol. 12079, pp. 412-419). SPIE.
 
-https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12079/120791Q/National-Basketball-Association-Most-Valuable-Player-prediction-based-on-machine/10.1117/12.2623094.full?SSO=1
+[Link to Paper](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12079/120791Q/National-Basketball-Association-Most-Valuable-Player-prediction-based-on-machine/10.1117/12.2623094.full?SSO=1)
 
 [3] Nguyen, N. H., Nguyen, D. T. A., Ma, B., & Hu, J. (2021). The application of machine learning and deep learning in sport: predicting NBA players’ performance and popularity. Journal of Information and Telecommunication, 1-19.
 
-https://www.tandfonline.com/doi/pdf/10.1080/24751839.2021.1977066?needAccess=true
-
-### Gantt Chart Schedule
-[Schedule and Roles](https://docs.google.com/spreadsheets/d/1LuZolhejX2NLJRxYQ-LqDw4Ic4dFY-k-Nkb-kCGmC5Q/edit?usp=sharing)
+[Link to Paper](https://www.tandfonline.com/doi/pdf/10.1080/24751839.2021.1977066?needAccess=true)
