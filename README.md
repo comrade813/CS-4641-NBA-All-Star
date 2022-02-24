@@ -3,7 +3,7 @@ Our project uses a dataset on players from the past 20 NBA seasons to best estim
 
 Previous work has shown success in predicting various NBA accolades using machine learning techniques. For example, Ji and Li use various neural network architectures as well as adaptive boosting with a dataset of in season player statistics and weekly fan voting to predict whether a player would be an NBA all star starter or reserve [1]. Li used methods such as random forests, decision trees, and logistic regression to predict an NBA MVP out of likely candidates [2]. Also, Nguyen et al. utilize historical player data to forecast a player’s future performance and popularity as characterized by all-star selection using techniques such as linear regression and support vector machine [3].
 
-We use a dataset from Basketball-Reference.com contains information ranging from player positions, age, associated teams, games played/started, minutes per game, field goals made, field goals attempted, field goals percentage, 2 and 3 point percentage, total rebounds, assists, steals, blocks, turnovers, personal fouls, total points made and some advanced statistics such as eFG% and PER. For more information, please visit [Link](https://www.basketball-reference.com/leagues/NBA_2021_totals.html)
+We use a dataset from Basketball-Reference.com contains information ranging from player positions, age, associated teams, games played/started, minutes per game, field goals made, field goals attempted, field goals percentage, 2 and 3 point percentage, total rebounds, assists, steals, blocks, turnovers, personal fouls, total points made and some advanced statistics such as eFG% and PER. For more information, please visit the [basketball-reference](https://www.basketball-reference.com/leagues/NBA_2021_totals.html) site.
 to see the players stats for just the 2020-2021 season. 
 
 ### Problem Definition
@@ -18,15 +18,15 @@ We plan to test our models on the last 20 seasons of NBA data and associated all
 ### References
 [1] B. Ji and J. Li, "NBA All-Star Lineup Prediction Based on Neural Networks," 2013 International Conference on Information Science and Cloud Computing Companion, 2013, pp. 864-869, doi: 10.1109/ISCC-C.2013.92.
 
-[Link](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6973701)
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6973701
 
 [2] Li, X. (2021, December). National Basketball Association Most Valuable Player prediction based on machine learning methods. In Second IYSF Academic Symposium on Artificial Intelligence and Computer Engineering (Vol. 12079, pp. 412-419). SPIE.
 
-[Link](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12079/120791Q/National-Basketball-Association-Most-Valuable-Player-prediction-based-on-machine/10.1117/12.2623094.full?SSO=1)
+https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12079/120791Q/National-Basketball-Association-Most-Valuable-Player-prediction-based-on-machine/10.1117/12.2623094.full?SSO=1
 
 [3] Nguyen, N. H., Nguyen, D. T. A., Ma, B., & Hu, J. (2021). The application of machine learning and deep learning in sport: predicting NBA players’ performance and popularity. Journal of Information and Telecommunication, 1-19.
 
-[Link](https://www.tandfonline.com/doi/pdf/10.1080/24751839.2021.1977066?needAccess=true)
+https://www.tandfonline.com/doi/pdf/10.1080/24751839.2021.1977066?needAccess=true
 
 ### Gantt Chart Schedule
-[Link](https://docs.google.com/spreadsheets/d/1LuZolhejX2NLJRxYQ-LqDw4Ic4dFY-k-Nkb-kCGmC5Q/edit?usp=sharing)
+[Schedule and Roles](https://docs.google.com/spreadsheets/d/1LuZolhejX2NLJRxYQ-LqDw4Ic4dFY-k-Nkb-kCGmC5Q/edit?usp=sharing)
