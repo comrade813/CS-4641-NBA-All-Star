@@ -111,9 +111,11 @@ def forward_and_backward(x:pd.DataFrame, y:pd.Series):
     plt.show()
 
 # only works with ridge and lsvc
-def recursive_selection(x:pd.DataFrame, y:pd.Series, estimator:str="ridge", n:int=8):
-    rfe = RFE(estimator=get_estimator(x,y,estimator,n), n_features_to_select=n, step=1)
+def recursive_selection(x:pd.DataFrame, y:pd.Series, estimator:str="ridge"):
+    print(x.shape, y.shape)
+    rfe = RFE(estimator=get_estimator(x,y,estimator,8), n_features_to_select=1)
     rfe.fit(x,y)
+    print(list(zip(rfe.ranking_, x.columns.values, rfe.get_support())))
     plt.figure(figsize=(8,5))
     plt.subplots_adjust(left=0.3)
     plt.barh(width=rfe.ranking_, y=x.columns)
@@ -137,4 +139,4 @@ def forest_feature_importance(x:pd.DataFrame, y:pd.Series):
     plt.show()
 
 x, y = features_only(data), data["is_all_star"]
-get_ridge(x, y)
+recursive_selection(x, y, "lsvc")
