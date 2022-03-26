@@ -49,7 +49,6 @@ def get_variance(x: pd.DataFrame, threshold:float=0.1):
     tmp = x.drop(["games_played", "minutes_played"], axis=1)
     v_threshold = VarianceThreshold(threshold=threshold)
     v_threshold.fit(tmp)
-    print(v_threshold.variances_)
     plt.figure(figsize=(8,5))
     plt.subplots_adjust(left=0.3)
     plt.barh(width=v_threshold.variances_, y=tmp.columns)
@@ -59,7 +58,7 @@ def get_variance(x: pd.DataFrame, threshold:float=0.1):
 
 def get_ridge(x: pd.DataFrame, y:pd.Series):
     ridge = RidgeClassifier().fit(x, y)
-    importance = np.abs(ridge.coef_)
+    importance = np.abs(ridge.coef_)[0]
     plt.figure(figsize=(8,5))
     plt.subplots_adjust(left=0.3)
     plt.barh(width=importance, y=x.columns)
@@ -138,4 +137,4 @@ def forest_feature_importance(x:pd.DataFrame, y:pd.Series):
     plt.show()
 
 x, y = features_only(data), data["is_all_star"]
-get_variance(x)
+get_ridge(x, y)
