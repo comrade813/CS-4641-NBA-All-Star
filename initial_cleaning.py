@@ -47,7 +47,12 @@ for year in all_stars.keys():
             else:
                 expected.append(0)
     data = data.drop(delete_rows)
+
+    #encode season that player corresponds to
+    data['season'] = [year] * len(data)
+
     data["is_all_star"] = expected
+    
     all_data = all_data.append(data)
 
 all_data.to_csv("data/partially_processed/" + file_suffix[1:], index=False)
