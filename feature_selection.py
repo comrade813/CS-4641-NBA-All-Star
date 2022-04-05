@@ -140,3 +140,6 @@ def forest_feature_importance(x:pd.DataFrame, y:pd.Series):
 
 x, y = features_only(data), data["is_all_star"]
 recursive_selection(x, y, "lsvc")
+
+# STUFF TO DO
+# ranking in forward selection
