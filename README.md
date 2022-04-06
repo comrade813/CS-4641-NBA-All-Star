@@ -1,32 +1,75 @@
-### Overview
-Our project uses a dataset on players from the past 20 NBA seasons to best estimate which players would end up on the NBA All-Star lineup for the 2021-2022 season. The All-Star lineup is a fan, player, and media voted list of the NBA’s best players for the current season based on their playing position.
+![imageMain](https://user-images.githubusercontent.com/54413900/161870408-8ca8fe9f-bbaf-480c-8fa8-bd9c3b63eba1.png)
 
-Previous work has shown success in predicting various NBA accolades using machine learning techniques. For example, Ji and Li use various neural network architectures as well as adaptive boosting with a dataset of in season player statistics and weekly fan voting to predict whether a player would be an NBA all star starter or reserve [1]. Li used methods such as random forests, decision trees, and logistic regression to predict an NBA MVP out of likely candidates [2]. Also, Nguyen et al. utilize historical player data to forecast a player’s future performance and popularity as characterized by all-star selection using techniques such as linear regression and support vector machine [3].
 
-We use a dataset from Basketball-Reference.com contains information ranging from player positions, age, associated teams, games played/started, minutes per game, field goals made, field goals attempted, field goals percentage, 2 and 3 point percentage, total rebounds, assists, steals, blocks, turnovers, personal fouls, total points made and some advanced statistics such as eFG% and PER. For more information, please visit the [basketball-reference](https://www.basketball-reference.com/leagues/NBA_2021_totals.html) site.
-to see the players stats for just the 2020-2021 season. 
 
-### Problem Definition
-Many metrics exist that analyze on-court player performance, but relatively few connections exist for translating these statistics to off-court perceptions and assessments. Given player statistics for a particular season, we seek to develop a method for accurately predicting a key annual NBA selection that is based on audience, player, and coach perceptions - the All-Star player lineup. This consists of the 24 NBA players who are regarded by coaches, players, and fans as the best players at their positions across the league. 
 
-### Methods
-Because predicting if a player will be an NBA All-Star is highly dependent on the player’s in-season and historical statistics, supervised learning, specifically classification, is required. We choose to use a neural network along with a random forest model because previous work by Ji and Li, Li, Nguyen et al. found that these types of models work well to predict basketball award selections such as the MVP (most valuable player) or the allstars.
+## Introduction / Background:
 
-### Potential Results
-We plan to test our models on the last 20 seasons of NBA data and associated all-star teams. We can then calculate classification metrics such as accuracy, precision, recall, and the F1-score. The latter will be useful because our data is inherently not balanced (since we have many times more non-All-Stars than All-Stars). Additionally, we plan to calculate the percentage of All-Star players that our model was able to predict for every year in the test set. Finally, we plan to include a discussion comparing the performance of our models with existing work.
+The National Basketball Association (NBA) consists of 30 teams, each containing 15 players, with additional players rotating in during the playoffs. Near the end of each season, a three-day exhibition event known as NBA All-Star Weekend is held, pitting the biggest stars across the league against each other. The All-Star lineup is a fan, player, and media voted list of the NBA’s 24 biggest players for the current season based on their playing position. Our project uses a dataset on players from the past 20 NBA seasons to best estimate which players would end up on the NBA All-Star lineup for the 2021-2022 season.
 
-### Gantt Chart Schedule
-[Schedule and Roles](https://docs.google.com/spreadsheets/d/1LuZolhejX2NLJRxYQ-LqDw4Ic4dFY-k-Nkb-kCGmC5Q/edit?usp=sharing)
+## Problem Definition:
 
-### References
-[1] B. Ji and J. Li, "NBA All-Star Lineup Prediction Based on Neural Networks," 2013 International Conference on Information Science and Cloud Computing Companion, 2013, pp. 864-869, doi: 10.1109/ISCC-C.2013.92.
+This prediction is not as straightforward as it may initially seem. A huge amount of raw data on NBA player statistics and performance is recorded and made publicly available each season, but it is not always immediately apparent how these statistics translate to perceptions off-court in what is in some ways a popularity contest. By applying machine learning techniques, however, we plan to make accurate predictions for a seemingly unscientific process.
 
-[Link to Paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6973701)
 
-[2] Li, X. (2021, December). National Basketball Association Most Valuable Player prediction based on machine learning methods. In Second IYSF Academic Symposium on Artificial Intelligence and Computer Engineering (Vol. 12079, pp. 412-419). SPIE.
 
-[Link to Paper](https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12079/120791Q/National-Basketball-Association-Most-Valuable-Player-prediction-based-on-machine/10.1117/12.2623094.full?SSO=1)
 
-[3] Nguyen, N. H., Nguyen, D. T. A., Ma, B., & Hu, J. (2021). The application of machine learning and deep learning in sport: predicting NBA players’ performance and popularity. Journal of Information and Telecommunication, 1-19.
 
-[Link to Paper](https://www.tandfonline.com/doi/pdf/10.1080/24751839.2021.1977066?needAccess=true)
+
+## Data Collection:
+
+###### Dataset Information/Source:
+
+The website Basketball-Reference.com contains a wide variety of past and current player information. For our investigation we collected a dataset of advanced player statistics, which contained 23 features and 9493 data points. A Python script was used to scrape the data from the past 20 seasons and assemble in preliminary .csv files. Manual cleaning was then undertaken to ready the datasets for further manipulation.
+
+###### Preprocessing:
+
+Initial investigations of the cleaned data revealed somewhat chaotic results, which is perhaps not surprising given the large number of features. An initial heat map for feature correlation was generated, as seen below:
+
+![Image2Main](https://user-images.githubusercontent.com/54413900/161870467-bf4a5f04-cf20-405f-8b76-0a48a54fce53.png)
+
+
+This tells us there are a number of features which are highly correlated, meaning the model really only needs one of them to function well. We would thus want to consider eliminating one of those features highlighted in dark green or red for feature reduction purposes.
+
+We wanted to understand more about the features that were important to the model, so we then ran a Random Forest Classifier on the full set of features. This clarified a number of insights, highlighting a number of features that seemed to be highly relevant, especially value_over_replacemnt_player, win_shares, player_efficiency_rating, and usage_percentage. 
+
+![Image4](https://user-images.githubusercontent.com/54413900/161873108-939b2954-1e7c-48be-80b1-955559dac669.png)
+
+
+We wanted to confirm these findings via another selection strategy, and thus ran a Ridge Classifier on the same data.
+
+![image5](https://user-images.githubusercontent.com/54413900/161873136-630f413e-9622-4144-a49e-29ce7debf99c.png)
+
+As seen, a more complicated picture emerged. True_shooting_percentage was identified as an extremely important feature, along with win_shares_per_48_minutes and value_over_replacement. 
+
+
+Since a feature selection trend was not necessarily clear, we decided to continue by running Forward and Backward Selection using different estimators, each time selecting the top 8 features. These graphs indicate rankings of features, with smaller bars indicating higher ranking/feature importance to the model.
+
+![image6](https://user-images.githubusercontent.com/54413900/161873159-f99c1a81-9f88-4560-b7bd-3f6d72f0c3de.png)
+
+![image7](https://user-images.githubusercontent.com/54413900/161873196-defd2e11-e47d-4b96-868e-24b3e4d83cda.png)
+
+The prediction results agree with some of the earlier findings, giving us confidence to begin finally eliminating some of the features. After discussion, a condensed selection of 9 features was established. These were:
+
+value_over_replacement_player
+true_shooting_percentage
+win_shares_per_48_minutes
+player_efficiency_rating
+usage_percentage
+offensive_box_plus_minus
+three_point_attempt_rate
+free_throw_attempt_rate
+steal_percentage
+These would be the final features used in our machine learning models.
+
+## Methods:
+
+###### First Model:
+
+Our first model used PyTorch to generate a neural network using three layers. Because the datasets inherently contain many more non All-Stars than All-Stars, there is a significant imbalance between the classes, thus calculating raw accuracy did not give us a good sense of what was going on when initially applying our neural network model. We attempted to solve this through two methods: F1 score adjustment and oversampling the minority class (the All-Stars). Both cases saw improvements, with F1 Score adjustments pushing the accuracy of the model to 91% (for Non-All stars) / 61% (for All-Stars). While oversampling the result still shows the same test case.
+
+Additionally, we realized we needed to normalize players by position and year, since different positions inherently put up different types of and to account for changes over the past two decades in the way the sport is played. As an example, a power forward would tend to have more three_point_attempt_Rate than Center by the nature of their position and roll on the court. We re-ran the model using the normalized Z-scores, observing a 2% increase in accuracy. 
+
+## Results and Discussion: 
+
+After a tedious process of testing multiple results and data sets. We realized that putting in PCA heavily skewers the data. We then reduced the data set from the original 23 features to 9 important features along with normalizing it. The 99% accuracy for Non-All Stars and the 58% for All-Stars is shown to be accurate. In every essence of the word, given that a player is Non-All Star, our model would have a 99% accuracy. While for a All-Star our model would have a 61% accuracy of predicting correctly. 
