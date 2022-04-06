@@ -61,15 +61,31 @@ The prediction results agree with some of the earlier findings, giving us confid
 * free_throw_attempt_rate
 * steal_percentage
 
-These would be the final features used in our machine learning models.
+Additionally, we realized we needed to standardize player features by position and year, since the context of the era of basketball and the position played heavily dictate the outcome of the all-star lineup. As an example, a power forward would tend to have a higher three_point_attempt_rate than a center in the NBA by the role of their position on the court. Additionally, since 2015, three_point_attempt_rate has increased across all positions compared to a season such as 2003.
 
 ## Methods:
 
-###### First Model:
+### First Model: Binary Classifier
 
-Our first model used PyTorch to generate a neural network using three layers. Because the datasets inherently contain many more non All-Stars than All-Stars, there is a significant imbalance between the classes, thus calculating raw accuracy did not give us a good sense of what was going on when initially applying our neural network model. We attempted to solve this through two methods: F1 score adjustment and oversampling the minority class (the All-Stars). Both cases saw improvements, with F1 Score adjustments pushing the accuracy of the model to 91% (for Non-All stars) / 61% (for All-Stars). While oversampling the result still shows the same test case.
+Our first model consisted of a neural net binary classifier implemented in PyTorch. Given a datapoint of single player's stats over one season, it will predict whether it belongs to either the 'All-Stars' or 'Non-All-Stars' class. Below are the key details of our model architecture and hyperparameters:
+* **Number of Hidden Layers: 3**
+    * Input Layer: Shape of input data
+    * Layer 1: 50 neurons
+    * Layer 2: 25 neurons
+    * Layer 3: 10 neurons
+    * Output Layer: 1 neuron
+* **Activation Function:**
+    * ReLU for every layer except output
+    * Sigmoid for output layer
+* **Loss Function:** Binary Cross Entropy
+* **Optimizer:** Stochastic Gradient Descent
+* **Optimized Hyperparameters:**
+    * Learning rate: 0.05
+    * Number of epochs: 14
+    * Batch Size: 32
+* **Train/Test/Validation Split:** 60%/20%/20% 
 
-Additionally, we realized we needed to normalize players by position and year, since different positions inherently put up different types of statistics and to account for changes over the past two decades in the way the sport is played. As an example, a power forward would tend to have more three_point_attempt_Rate than Center by the nature of their position and roll on the court. We re-ran the model using the normalized Z-scores, observing a 2% increase in accuracy. 
+Because the datasets inherently contain far more non All-Stars than All-Stars, there is a significant imbalance between the classes. For instance, only about 5% of players in the last 20 seasons of the NBA were selected as All-Stars. Thus, optimizing our model for solely raw accuracy did not give us a classifier with much predictive power, as it could predict 'Non-All-Star' for any datapoint and still achieve a ~95% overall accuracy. We attempted to solve this through two methods: Optimizing for the F1-Score of the 'All-Stars' class and oversampling. Oversampling refers to the technique of randomly sampling datapoints belonging to the minority class such that both classes have the same number of datapoints in the training set, thus creating a more balanced dataset.
 
 ## Results and Discussion: 
 
