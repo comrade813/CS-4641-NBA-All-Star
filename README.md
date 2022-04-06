@@ -67,7 +67,7 @@ Additionally, we realized we needed to standardize player features by position a
 
 ### First Model: Binary Classifier
 
-Our first model consisted of a neural net binary classifier implemented in PyTorch. Given a datapoint of single player's stats over one season, it will predict whether it belongs to either the 'All-Stars' or 'Non-All-Stars' class. Below are the key details of our model architecture and hyperparameters:
+Our first model consisted of a neural net binary classifier implemented in PyTorch. Given a datapoint of single player's stats over one season, it will predict whether it belongs to either the 'All-Stars' or 'Non-All-Stars' class. Below are the key details of our model architecture and data:
 * **Number of Hidden Layers: 3**
     * Input Layer: Shape of input data
     * Layer 1: 50 neurons
@@ -79,14 +79,38 @@ Our first model consisted of a neural net binary classifier implemented in PyTor
     * Sigmoid for output layer
 * **Loss Function:** Binary Cross Entropy
 * **Optimizer:** Stochastic Gradient Descent
-* **Optimized Hyperparameters:**
-    * Learning rate: 0.05
-    * Number of epochs: 14
-    * Batch Size: 32
 * **Train/Test/Validation Split:** 60%/20%/20% 
 
 Because the datasets inherently contain far more non All-Stars than All-Stars, there is a significant imbalance between the classes. For instance, only about 5% of players in the last 20 seasons of the NBA were selected as All-Stars. Thus, optimizing our model for solely raw accuracy did not give us a classifier with much predictive power, as it could predict 'Non-All-Star' for any datapoint and still achieve a ~95% overall accuracy. We attempted to solve this through two methods: Optimizing for the F1-Score of the 'All-Stars' class and oversampling. Oversampling refers to the technique of randomly sampling datapoints belonging to the minority class such that both classes have the same number of datapoints in the training set, thus creating a more balanced dataset.
 
 ## Results and Discussion: 
 
-After a tedious process of testing multiple results and data sets. We realized that putting in PCA heavily skewers the data. We then reduced the data set from the original 23 features to 9 important features along with normalizing it. The 99% accuracy for Non-All Stars and the 61% for All-Stars is shown to be accurate. In every essence of the word, given that a player is Non-All Star, our model would have a 99% accuracy. While for a All-Star our model would have a 61% accuracy of predicting correctly. 
+We manually experimented with different neural network architectures and found that the architecture in the previous section performed the best for the classification task. Additionally, we use ReLU as the activation function for all layers except for the output layer because it is the state-of-the-art default. We use sigmoid after the output layer to convert the output to a probability between 0 and 1. This probability can then be rounded to either 0 or 1 corresponding to the labels of 'Non-All-Star' and 'All-Star' respectively for inference. Also, we used binary cross entrophy and stochastic gradient descent as they are defaults for binary classification.
+
+We use a three way split of data into train, validation, and test sets so that we could use the train set to train the neural network, the validation set to select the best model and hyperparameters, and the test set to calculate the final performance metrics.
+
+First, we tried training and evaluating our classifier with the full set of standardized features (23 features from Basketball-Reference.com). We found that our model was able to achieve 97.36% raw accruacy and a 0.77 F1-score on the 'All-Star' class with the below hyperparameters.
+
+**Optimized Hyperparameters:**
+* Learning rate: 0.05
+* Number of epochs: 14
+* Batch Size: 32
+
+At this stage, we manually optimized the hyperparameters for F1 of the 'All-Star' class, however, in the the future, we could use hyperparameter tuning to optimize these in an automated manner. The full classification report from sklearn for this full standardized dataset is provided below:
+
+<img width="448" alt="Screen_Shot_2022-04-06_at_1 50 24_AM" src="https://user-images.githubusercontent.com/37726288/161912908-63791fff-2ac0-43d0-8d79-6987a1acb5af.png">
+
+The graph of loss for the train and validation set for each epoch is shown below:
+
+![loss_v_epoch](https://user-images.githubusercontent.com/37726288/161913210-97b441df-8513-4e9f-a76e-d33fcb7fed43.png)
+
+Since the loss on the validation set does not begin to increase in the epoch range shown, we can be confident that the model is not overfitting to the training set.
+Also, the graph of accuracy for the train and validation set for each epoch is shown below:
+
+![acc_v_epoch](https://user-images.githubusercontent.com/37726288/161913288-85fabb7f-92de-4add-b026-c0175eec2432.png)
+
+We also tried evaluating our classifier with the reduced set of 9 standardized features mentioned above. However, we found that for the chosen model architecture, the model trained on these reduced features performed worse than the model trained on the full set of standardized features as this model had a 95.45% raw-accuracy and a F1-score of 0.62 on the 'All-Star' class. 
+
+Finally, we found that applying PCA applied to both the full and reduced feature sets give much worse accuracy and F1-scores for this type of model architecture.
+
+In the future, we hope to experiment with different models such as Random Forest or Naive Bayes models to see if the reduced feature set and the application of PCA will perform better with these architectures. Also, as mentioned, we hope to perform rigorous hyperparameter tuning in order to find a truly optimal model for predicting the All-Star team.
