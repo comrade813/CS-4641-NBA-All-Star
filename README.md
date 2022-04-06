@@ -20,18 +20,18 @@ This prediction is not as straightforward as it may initially seem. A huge amoun
 
 ###### Dataset Information/Source:
 
-The website Basketball-Reference.com contains a wide variety of past and current player information. For our investigation we collected a dataset of advanced player statistics, which contained 23 features and 9493 data points. A Python script was used to scrape the data from the past 20 seasons and assemble in preliminary .csv files. Manual cleaning was then undertaken to ready the datasets for further manipulation.
+The website Basketball-Reference.com contains a wide variety of past and current player information. For our investigation we collected a dataset of advanced player statistics, which contained 23 features and 9493 data points. Some of the features included player_efficiency_rating, usage_percentage, and win_shares. A Python script was used to scrape the data from the past 20 seasons and assemble in preliminary .csv files. Manual cleaning was then undertaken to ready the datasets for further manipulation.
 
 ###### Preprocessing:
 
-Initial investigations of the cleaned data revealed somewhat chaotic results, which is perhaps not surprising given the large number of features. An initial heat map for feature correlation was generated, as seen below:
+Initial investigations of the cleaned data revealed somewhat chaotic results, which is perhaps not surprising given the large number of features. We generated an initial heat map to see how features were correlated. This heat map is shown below:
 
 ![Image2Main](https://user-images.githubusercontent.com/54413900/161870467-bf4a5f04-cf20-405f-8b76-0a48a54fce53.png)
 
 
 This tells us there are a number of features which are highly correlated, meaning the model really only needs one of them to function well. We would thus want to consider eliminating one of those features highlighted in dark green or red for feature reduction purposes.
 
-We wanted to understand more about the features that were important to the model, so we then ran a Random Forest Classifier on the full set of features. This clarified a number of insights, highlighting a number of features that seemed to be highly relevant, especially value_over_replacemnt_player, win_shares, player_efficiency_rating, and usage_percentage. 
+We wanted to understand more about the features that were important to the model, so we then ran a Random Forest Classifier on the full set of features. This clarified a number of insights, highlighting a number of features that seemed to be highly relevant, especially value_over_replacement_player, win_shares, player_efficiency_rating, and usage_percentage. In this graph, features with larger bars indicate higher ranking/importance to the model.
 
 ![Image4](https://user-images.githubusercontent.com/54413900/161873108-939b2954-1e7c-48be-80b1-955559dac669.png)
 
@@ -51,15 +51,16 @@ Since a feature selection trend was not necessarily clear, we decided to continu
 
 The prediction results agree with some of the earlier findings, giving us confidence to begin finally eliminating some of the features. After discussion, a condensed selection of 9 features was established. These were:
 
-value_over_replacement_player
-true_shooting_percentage
-win_shares_per_48_minutes
-player_efficiency_rating
-usage_percentage
-offensive_box_plus_minus
-three_point_attempt_rate
-free_throw_attempt_rate
-steal_percentage
+* value_over_replacement_player
+* true_shooting_percentage
+* win_shares_per_48_minutes
+* player_efficiency_rating
+* usage_percentage
+* offensive_box_plus_minus
+* three_point_attempt_rate
+* free_throw_attempt_rate
+* steal_percentage
+
 These would be the final features used in our machine learning models.
 
 ## Methods:
