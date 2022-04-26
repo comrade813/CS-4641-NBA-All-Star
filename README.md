@@ -83,8 +83,43 @@ Our first model consisted of a neural net binary classifier implemented in PyTor
 
 Because the datasets inherently contain far more non All-Stars than All-Stars, there is a significant imbalance between the classes. For instance, only about 5% of players in the last 20 seasons of the NBA were selected as All-Stars. Thus, optimizing our model for solely raw accuracy did not give us a classifier with much predictive power, as it could predict 'Non-All-Star' for any datapoint and still achieve a ~95% overall accuracy. We attempted to solve this through two methods: Optimizing for the F1-Score of the 'All-Stars' class and oversampling. Oversampling refers to the technique of randomly sampling datapoints belonging to the minority class such that both classes have the same number of datapoints in the training set, thus creating a more balanced dataset.
 
+### Second Model: Random Forest Classifier
+
+Training of this model was undertaken using the same 60%/20%/20% proportions seen in our Neural Network model. A validation F1 Score was determined using a random_state value of 0 to guarantee consistency. 
+
+* **This value was: 0.7039106145251396**
+
+With this baseline in hand we could proceed with the training set. We used a brute force approach to parameter tuning - a series of nested for loops to test every possible combination of n_estimators, max_depth, and max_features within a manually selected range to arrive at the highest possible F1 score.
+
+* **The optimal combination was:**
+   * n_estiamtors = 80
+   * max_depth = 16
+   * max_features = ‘auto’
+
+* **The optimized F1 training data score associated with these parameters was: 0.7150837988826815**
+
+Observe that the validation and training F1 scores are very similar. This gave us confidence that the model had not overfitted. We would proceed with our test data.
+
+### Third Model: Support Vector Classifier
+
+Training of this model was again using the same 60%/20%/20% proportions seen in our Neural Network model, with F1 Score as the evaluation metric and a random_state value of 0 to guarantee consistency.
+
+We used a brute force approach to parameter tuning - a series of nested for loops to test every possible combination of C, kernel, degree (which only mattered for kernel=”poly”), and gamma within a manually selected range to arrive at the highest possible F1 score. 
+
+* **The optimal combination was:**
+   * C = 1.9
+   * kernel = “poly”
+   * degree = 1
+   * gamma = “auto”
+
+* **The optimized F1 training data score associated with these parameters was: 0.7081850533807829**
+
+* **The optimized F1 validation data score for this tuned model was: 0.7614213197969543**
+
+
 ## Results and Discussion: 
 
+### Binary Classifier
 We manually experimented with different neural network architectures and found that the architecture in the previous section performed the best for the classification task. Additionally, we use ReLU as the activation function for all layers except for the output layer because it is the state-of-the-art default. We use sigmoid after the output layer to convert the output to a probability between 0 and 1. This probability can then be rounded to either 0 or 1 corresponding to the labels of 'Non-All-Star' and 'All-Star' respectively for inference. Also, we used binary cross entrophy and stochastic gradient descent as they are defaults for binary classification.
 
 We use a three way split of data into train, validation, and test sets so that we could use the train set to train the neural network, the validation set to select the best model and hyperparameters, and the test set to calculate the final performance metrics.
@@ -114,3 +149,56 @@ We also tried evaluating our classifier with the reduced set of 9 standardized f
 Finally, we found that applying PCA applied to both the full and reduced feature sets give much worse accuracy and F1-scores for this type of model architecture.
 
 In the future, we hope to experiment with different models such as Random Forest or Naive Bayes models to see if the reduced feature set and the application of PCA will perform better with these architectures. Also, as mentioned, we hope to perform rigorous hyperparameter tuning in order to find a truly optimal model for predicting the All-Star team.
+
+### Random Forest Classifier
+Using the same values of n_estimators, max_depth, and max_features found during tuning,  we ran the model on the test portion of our dataset. The resulting score is below:
+
+**F1 Test Score: 0.71875**
+
+As we can see, the loss value between testing and training data is very low. (As shown in the graph below)
+![Training v Validation loss](https://user-images.githubusercontent.com/54413900/165400008-a2c8f477-109e-4f63-b96d-bb3079d0ef81.png)
+
+
+
+![Training v Validation Accuracy loss](https://user-images.githubusercontent.com/54413900/165400155-6a7f073f-c7eb-4d4a-aba6-43949216c399.png)
+
+Note however that this score is achieved by use of the random forest classifier with the larger dataset of 23 features that has been normalized. The most likely reason for this outcome is random forest’s sensitivity to sparse datasets. Improving the random forest model might prove difficult, as expanding the dataset to solve the sparse data issue would entail incorporating a greater range of years of basketball history. Gameplay styles have evolved considerably over the years, and including earlier years might counterintuitively degrade the model’s ability to predict the present.
+
+### Support Vector Classifier
+Using the same values of C, kernel, and gamma found during tuning, we ran the model on the test portion of our dataset, getting 
+
+**F1 Test Score: 0.7272727272727274**
+
+If we look at manipulation of the data based on the **Large Dataset**
+* **Training** 
+- ![image](https://user-images.githubusercontent.com/54413900/165401100-ecbbd670-4779-4d37-9ccc-5b0f566339c2.png)
+
+* **Validation**
+- ![image](https://user-images.githubusercontent.com/54413900/165401163-20b0993a-eb56-4277-b443-a7f16ce30d67.png)
+
+* **Testing**
+- ![image](https://user-images.githubusercontent.com/54413900/165401205-8222ffb4-868e-4906-a0ae-6646a423999d.png)
+
+While if we were looking at a **Reduced Dataset**
+* **Training**
+- ![image](https://user-images.githubusercontent.com/54413900/165401330-ee4b5383-2ab1-413c-8a1c-f1af2618bcdd.png)
+
+* **Vallidation**
+- ![image](https://user-images.githubusercontent.com/54413900/165401377-c72d3bcd-3864-4e5c-a114-a372bfecc37d.png)
+
+* **Testing**
+- ![image](https://user-images.githubusercontent.com/54413900/165401417-9d8e2fa7-d7ac-4d69-ac8a-255cb5c4b681.png)
+
+
+This score is achieved by use of the support vector classifier with the larger dataset of 23 features that has been normalized. There being little difference between the training f1 score vs the validation and testing f1 scores suggest that the SVM model is not overfitting on the training data. 
+
+## Conclusions:
+For our project we used three supervised machine learning models, a binary classifier neural network, random forest classifier, and support vector classifier. Each model was implemented using sklearn on a standardized dataset of the past 20 years of advanced basketball player statistics. 
+
+Overall our best results were found to come from our neural network using the full set of standardized features. In this case the F1-Score outperformed Random Forest by ~.05 and SVM by ~.04. The shortcomings of Random Forest can most likely be attributed to the relatively small dataset. Our support vector model performed nearly as well as our neural network. 
+
+**Neural Network F1: .77**
+**Random Forest F1: .72**
+**SVM F1: .73**
+
+While our results are good, we would of course love to achieve higher prediction ability. Since our best results were found to come from our neural network model, we would devote more time in this direction, trying to determine if further tuning and dataset variation would translate into greater accuracy. Additionally, since we found our models generally degraded when features were removed, it would be interesting to attempt to expand the dataset by adding more features beyond those initially scraped from the source website. Since public perception is a key element of the All-Star selection process, adding features that capture team performance metrics might prove useful, or in an even more expanded context, social media metrics pulled from Twitter might allow for additional insights on how players are perceived by the public. All in all our data remains accurate, and if possible by adding more feature and having more data to manipulate with might result in a even more accurate end result.
