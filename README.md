@@ -155,13 +155,6 @@ Using the same values of n_estimators, max_depth, and max_features found during 
 
 **F1 Test Score: 0.71875**
 
-As we can see, the loss value between testing and training data is very low. (As shown in the graph below)
-![Training v Validation loss](https://user-images.githubusercontent.com/54413900/165400008-a2c8f477-109e-4f63-b96d-bb3079d0ef81.png)
-
-
-
-![Training v Validation Accuracy loss](https://user-images.githubusercontent.com/54413900/165400155-6a7f073f-c7eb-4d4a-aba6-43949216c399.png)
-
 Note however that this score is achieved by use of the random forest classifier with the larger dataset of 23 features that has been normalized. The most likely reason for this outcome is random forest’s sensitivity to sparse datasets. Improving the random forest model might prove difficult, as expanding the dataset to solve the sparse data issue would entail incorporating a greater range of years of basketball history. Gameplay styles have evolved considerably over the years, and including earlier years might counterintuitively degrade the model’s ability to predict the present.
 
 ### Support Vector Classifier
